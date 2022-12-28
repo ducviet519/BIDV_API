@@ -125,7 +125,7 @@ namespace DataBIDV.Extensions
 
             return Jose.JWT.Encode(json, rsa, Jose.JwsAlgorithm.RS256, options: new JwtOptions { DetachPayload = true });
         }
-
+         
         #endregion
 
         #region General JSON Web Encryption (JWE)
