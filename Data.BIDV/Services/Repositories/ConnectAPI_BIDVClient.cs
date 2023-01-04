@@ -2,6 +2,7 @@
 using DataBIDV.Models;
 using DataBIDV.Services.Interfaces;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -57,6 +58,7 @@ namespace DataBIDV.Services.Repositories
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
                     data = JsonConvert.DeserializeObject<TokenAPI>(responseContent);
+
                 }
                 return data;
             }
@@ -98,37 +100,20 @@ namespace DataBIDV.Services.Repositories
         }
         #endregion
         
-        //API Vấn tin danh sách giao dịch (Có mã hóa dữ liệu)
-        public async Task<List<GiaoDich>> Get_DanhSachGiaoDich_Encrypt(RequestBody request)
-        {          
-            List<GiaoDich> data = new List<GiaoDich>();           
-            try
-            {
-                string jsonContent = StaticHelper.EncryptionJWE(request);
-                var responseData = await Get_API_Data("/iconnect/account/getAcctHis/v1.1", jsonContent);
-                var model = JsonConvert.DeserializeObject<Root_GiaoDich>(responseData);
-                foreach (var item in model.data.rows)
-                {
-                    var row = new GiaoDich()
-                    {
-                        requestId = model.requestId,
-                        accountNo = request.accountNo,
-                        amount = item.amount,
-                        curr = item.curr,
-                        dorc = item.dorc,
-                        remark = item.remark,
-                        transDate = item.transDate,
-                        transTime = item.transTime,
-                    };
-                    data.Add(row);
-                }
-                return data;
-            }
-            catch (Exception ex)
-            {
-                string Msg = ex.Message;
-                throw;
-            }
-        }        
+        public async Task<Root_GiaoDich> Get_DanhSachGiaoDich_Encrypt(RequestBody request)
+        {
+            string jsonContent = StaticHelper.EncryptionJWE(request);
+            var responseData = await Get_API_Data("/iconnect/account/getAcctHis/v1.1", jsonContent);
+
+            return JsonConvert.DeserializeObject<Root_GiaoDich>(responseData);            
+        }
+
+        public async Task<string> Get_DanhSachGiaoDich_Json(RequestBody request)
+        {
+            string jsonContent = StaticHelper.EncryptionJWE(request);
+            var responseData = await Get_API_Data("/iconnect/account/getAcctHis/v1.1", jsonContent);
+
+            return StaticHelper.BeautifyJson(responseData);
+        }
     }
 }

@@ -1,6 +1,9 @@
-﻿using DataBIDV.Models;
+﻿using DataBIDV.Extensions;
+using DataBIDV.Models;
 using DataBIDV.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +21,11 @@ namespace BIDV.Controllers
             _services = services;
         }
 
-        [HttpPost]
-        public async Task<List<GiaoDich>> Get(RequestBody requestBody)
+        [HttpGet]
+        public async Task<IActionResult> Get(string accountNo, string transDate, string pageNum)
         {
-            List<GiaoDich> DanhSachGiaoDich_Encrypt = await _services.API.Get_DanhSachGiaoDich_Encrypt(requestBody);
-            return DanhSachGiaoDich_Encrypt;
+            RequestBody requestBody = new RequestBody() { accountNo = accountNo, transDate = transDate, pageNum = Int32.Parse(pageNum) };
+            return Ok(await _services.API.Get_DanhSachGiaoDich_Encrypt(requestBody));
         }
     }
 }

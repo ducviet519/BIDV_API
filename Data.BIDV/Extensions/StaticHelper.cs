@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 
 namespace DataBIDV.Extensions
 {
@@ -181,6 +182,18 @@ namespace DataBIDV.Extensions
             }
 
             return data;
+        }
+        #endregion
+
+        #region BeautifyJson
+        public static string BeautifyJson(string json)
+        {
+            using JsonDocument document = JsonDocument.Parse(json);
+            using var stream = new MemoryStream();
+            using var writer = new Utf8JsonWriter(stream, new JsonWriterOptions() { Indented = true });
+            document.WriteTo(writer);
+            writer.Flush();
+            return Encoding.UTF8.GetString(stream.ToArray());
         }
         #endregion
     }

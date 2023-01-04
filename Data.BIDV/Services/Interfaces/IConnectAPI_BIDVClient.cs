@@ -9,7 +9,8 @@ namespace DataBIDV.Services.Interfaces
 {
     public interface IConnectAPI_BIDVClient
     {
-        public Task<List<GiaoDich>> Get_DanhSachGiaoDich_Encrypt(RequestBody request);
 
+        public Task<Root_GiaoDich> Get_DanhSachGiaoDich_Encrypt(RequestBody request);
+        public Task<string> Get_DanhSachGiaoDich_Json(RequestBody request);
     }
 }
