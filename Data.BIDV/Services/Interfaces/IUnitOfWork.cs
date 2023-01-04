@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data.BIDV.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,6 @@ namespace DataBIDV.Services.Interfaces
     public interface IUnitOfWork
     {
         IConnectAPI_BIDVClient API { get; }
+        IConnectAPI_VBNBClient VBNB { get; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using DataBIDV.Services.Interfaces;
+﻿using Data.BIDV.Services.Interfaces;
+using DataBIDV.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,11 @@ namespace DataBIDV.Services.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         public IConnectAPI_BIDVClient API { get; }
-        public UnitOfWork(IConnectAPI_BIDVClient connectAPI)
+        public IConnectAPI_VBNBClient VBNB { get; }
+        public UnitOfWork(IConnectAPI_BIDVClient connectAPI, IConnectAPI_VBNBClient connectAPI_VBNB)
         {
             API = connectAPI;
+            VBNB = connectAPI_VBNB;
         }
 
     }
