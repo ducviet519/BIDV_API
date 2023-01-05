@@ -30,7 +30,7 @@ namespace BIDV.Controllers
             result = await _services.VBNB.Upsert_Documents(json);
 
             if (result == "OK") { return Ok("Lấy dữ liệu thành công"); }
-            else { return BadRequest("Lỗi khi truy xuất dữ liệu!"); }
+            else { return BadRequest($"Lỗi khi truy xuất dữ liệu! {result}"); }
         }
 
         [HttpGet("GetAllDocuments")]
@@ -46,7 +46,7 @@ namespace BIDV.Controllers
             }
 
             if (result == "OK") { return Ok("Lấy dữ liệu thành công"); }
-            else { return BadRequest("Lỗi khi truy xuất dữ liệu!"); }
+            else { return BadRequest($"Lỗi khi truy xuất dữ liệu! {result}"); }
         }        
 
         [HttpGet("GetCabinet/{id}")]
@@ -59,7 +59,7 @@ namespace BIDV.Controllers
             result = await _services.VBNB.Upsert_Documents_Cabinets(json, id);
 
             if (result == "OK") { return Ok("Lấy dữ liệu thành công"); }
-            else { return BadRequest("Lỗi khi truy xuất dữ liệu!"); }
+            else { return BadRequest($"Lỗi khi truy xuất dữ liệu! {result}"); }
         }
 
 
