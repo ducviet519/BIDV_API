@@ -20,23 +20,7 @@ namespace BIDV.Controllers
             _services = services;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post()
-        {
-            string result = String.Empty;
-            List<Root> List = new List<Root>();
-            for (int page = 1; page <= 559; page++)
-            {
-                string json = await _services.VBNB.Get_Documents(page.ToString(), "vietld", "0975318195");
-                result = await _services.VBNB.Upsert_Documents(json);
-                Thread.Sleep(180000);
-            }
-
-            if (result == "OK") { return Ok(); }
-            else { return BadRequest(); }
-        }
-
-        [HttpGet]
+        [HttpGet("GetDocuments/{page}")]
         public async Task<IActionResult> Get(int page)
         {
             string result = String.Empty;
@@ -45,8 +29,39 @@ namespace BIDV.Controllers
             string json = await _services.VBNB.Get_Documents(page.ToString(), "vietld", "0975318195");
             result = await _services.VBNB.Upsert_Documents(json);
 
-            if (result == "OK") { return Ok(); }
-            else { return BadRequest(); }
+            if (result == "OK") { return Ok("Lấy dữ liệu thành công"); }
+            else { return BadRequest("Lỗi khi truy xuất dữ liệu!"); }
         }
+
+        [HttpGet("GetAllDocuments")]
+        public async Task<IActionResult> GetAllDocuments()
+        {
+            string result = String.Empty;
+            List<Root> List = new List<Root>();
+            for (int page = 1; page <= 559; page++)
+            {
+                string json = await _services.VBNB.Get_Documents(page.ToString(), "vietld", "0975318195");
+                result = await _services.VBNB.Upsert_Documents(json);
+                Thread.Sleep(60000);
+            }
+
+            if (result == "OK") { return Ok("Lấy dữ liệu thành công"); }
+            else { return BadRequest("Lỗi khi truy xuất dữ liệu!"); }
+        }        
+
+        [HttpGet("GetCabinet/{id}")]
+        public async Task<IActionResult> Get_Cabinets(int id)
+        {
+            string result = String.Empty;
+            List<Root> List = new List<Root>();
+
+            string json = await _services.VBNB.Get_Documents_Cabinets(id.ToString(), "vietld", "0975318195");
+            result = await _services.VBNB.Upsert_Documents_Cabinets(json, id);
+
+            if (result == "OK") { return Ok("Lấy dữ liệu thành công"); }
+            else { return BadRequest("Lỗi khi truy xuất dữ liệu!"); }
+        }
+
+
     }
 }

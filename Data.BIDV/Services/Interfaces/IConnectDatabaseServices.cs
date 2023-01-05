@@ -10,5 +10,6 @@ namespace DataBIDV.Services.Interfaces
     public interface IConnectDatabaseServices
     {
         public Task<string> Insert_GiaoDich(GiaoDich giaodich);
+
     }
 }

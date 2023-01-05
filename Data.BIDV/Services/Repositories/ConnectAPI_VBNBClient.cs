@@ -67,6 +67,59 @@ namespace Data.BIDV.Services.Repositories
                     new
                     {
                         json = json,
+                        type = 1,
+                    },
+                        commandType: CommandType.StoredProcedure));
+                    if (data > 0)
+                    {
+                        result = "OK";
+                    }
+                    dbConnection.Close();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return result;
+            }
+        }
+
+        public async Task<string> Get_Documents_Cabinets(string id, string username, string password)
+        {
+            var options = new RestClientOptions(_baseUrl);
+            using var client = new RestClient(options)
+            {
+                Authenticator = new HttpBasicAuthenticator(username, password),
+            };
+
+            var request = new RestRequest($"/api/documents/{id}/cabinets/");
+            request.AddParameter("page", 1);
+            var response = await client.GetAsync(request);
+
+            if (response.IsSuccessful)
+            {
+                return response.Content;
+            }
+
+            return null;
+        }
+
+        public async Task<string> Upsert_Documents_Cabinets(string json, int id)
+        {
+            string result = String.Empty;
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    if (dbConnection.State == ConnectionState.Closed)
+                        dbConnection.Open();
+                    var data = (await dbConnection.ExecuteAsync("sp_VBNBCu_Get",
+                    new
+                    {
+                        json = json,
+                        type = 2,
+                        idvb = id,
                     },
                         commandType: CommandType.StoredProcedure));
                     if (data > 0)

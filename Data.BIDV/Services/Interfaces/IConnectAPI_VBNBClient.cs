@@ -11,5 +11,9 @@ namespace Data.BIDV.Services.Interfaces
         Task<string> Get_Documents(string page, string username, string password);
 
         Task<string> Upsert_Documents(string json);
+
+        Task<string> Get_Documents_Cabinets(string id, string username, string password);
+
+        Task<string> Upsert_Documents_Cabinets(string json, int id);
     }
 }
